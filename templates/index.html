@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI PDF Summarizer</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Correct Flask static CSS link -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>📄 AI PDF Summarizer</h1>
+        <p>Upload your PDF and get concise AI-generated summaries instantly!</p>
+        <button id="theme-toggle">🌙 Dark Mode</button>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="card">
+            <!-- PDF Upload Form -->
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="pdf" accept="application/pdf" required>
+                <button type="submit" class="btn">Summarize PDF</button>
+            </form>
+
+            <!-- Summary Section -->
+            {% if summary %}
+            <div class="summary-box animate">
+                <h2>📌 Summary</h2>
+                <div class="summary-text">
+                    <pre>{{ summary }}</pre>
+                </div>
+                <form action="/download" method="POST">
+                    <input type="hidden" name="summary" value="{{ summary }}">
+                    <button class="btn download-btn">⬇ Download Summary</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Correct Flask static JS link -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
