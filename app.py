@@ -2,11 +2,15 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, send_file
 import pdfplumber
-from google import genai
+import google.generativeai as genai
 from io import BytesIO
 
+# Load .env locally; Render will use environment variables
 load_dotenv()
+
+# Initialize GenAI client with API key from environment variable
 client = genai.Client(api_key=os.getenv("GENAI_API_KEY"))
+
 app = Flask(__name__)
 
 def extract_text(pdf_file):
@@ -29,18 +33,4 @@ def summarize_text(text):
 def index():
     summary = None
     if request.method == "POST":
-        pdf_file = request.files["pdf"]
-        extracted = extract_text(BytesIO(pdf_file.read()))
-        summary = summarize_text(extracted)
-    return render_template("index.html", summary=summary)
-
-@app.route("/download", methods=["POST"])
-def download_summary():
-    summary_text = request.form.get("summary", "")
-    buffer = BytesIO()
-    buffer.write(summary_text.encode("utf-8"))
-    buffer.seek(0)
-    return send_file(buffer, as_attachment=True, download_name="summary.txt", mimetype="text/plain")
-
-if __name__ == "__main__":
-    app.run(debug=True)
+        pdf
